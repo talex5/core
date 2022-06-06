@@ -467,6 +467,8 @@ module type S = sig
         returned by calling [wait]. *)
     type t [@@deriving sexp_of]
 
+    val fd : t -> File_descr.t
+
     val invariant : t -> unit
 
     (** [create ~num_file_descrs] creates a new epoll set able to watch file descriptors

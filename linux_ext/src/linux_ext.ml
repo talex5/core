@@ -148,6 +148,7 @@ module Null_toplevel = struct
     type t = [ `Epoll_is_not_implemented ] [@@deriving sexp_of]
     let create = Or_error.unimplemented "Linux_ext.Epoll.create"
     let close _ = assert false
+    let fd _ = assert false
 
     let invariant _               = assert false
 
@@ -954,6 +955,10 @@ module Epoll = struct
   ;;
 
   external epoll_wait : File_descr.t -> ready_events -> int -> int = "core_linux_epoll_wait"
+
+  let fd t =
+    let t = in_use_exn t in
+    t.epollfd
 
   let wait_internal t ~timeout_ms =
     let t = in_use_exn t in
